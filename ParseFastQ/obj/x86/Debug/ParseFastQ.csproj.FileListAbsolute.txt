@@ -1,0 +1,9 @@
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\bin\Debug\ParseFastQ.exe
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\bin\Debug\ParseFastQ.pdb
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\ParseFastQ.Form1.resources
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\ParseFastQ.Properties.Resources.resources
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\GenerateResource.read.1.tlog
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\GenerateResource.write.1.tlog
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\ParseFastQ.exe
+c:\users\clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x86\Debug\ParseFastQ.pdb

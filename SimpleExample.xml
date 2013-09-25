@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AFSeq>
+  <!--AFSeq element contains everything you need to run a -->
+  <!--Barcodes contains the barcode elements-->
+  <Barcodes>
+    <!--Each barcode element contains the 6 basepairs that identify a barcode-->
+    <Barcode>AGCAAT</Barcode>
+    <Barcode>CCTGTT</Barcode>
+    <Barcode>GGGTTT</Barcode>
+    <Barcode>GAAGGC</Barcode>
+    <Barcode>ATCTCA</Barcode>
+    <Barcode>ATGGAT</Barcode>
+    <Barcode>ATGTCT</Barcode>
+    <Barcode>CGTGAC</Barcode>
+    <Barcode>TTAGGT</Barcode>
+    <Barcode>GTGCAT</Barcode>
+    <Barcode>AACTTT</Barcode>
+    <Barcode>GGTCTT</Barcode>
+    <Barcode>ATAAGG</Barcode>
+    <Barcode>ATTGGT</Barcode>
+    <Barcode>AGTGAG</Barcode>
+    <Barcode>CCCACC</Barcode>
+    <Barcode>CGATGC</Barcode>
+    <Barcode>GATAGC</Barcode>
+    <Barcode>GTCAGA</Barcode>
+    <Barcode>TTAAGC</Barcode>
+    <Barcode>AACCTG</Barcode>
+    <Barcode>CTTTGC</Barcode>
+    <Barcode>TGGAGA</Barcode>
+    <Barcode>AATTGT</Barcode>
+    <Barcode>TGACGA</Barcode>
+    <Barcode>CAAATA</Barcode>
+    <Barcode>GTTCAG</Barcode>
+    <Barcode>CTTCAA</Barcode>
+    <Barcode>GTTGGG</Barcode>
+    <Barcode>GCTTAG</Barcode>
+    <Barcode>TAGCCA</Barcode>
+    <Barcode>TAACTT</Barcode>
+    <Barcode>CGGATA</Barcode>
+    <Barcode>CAGCAG</Barcode>
+    <Barcode>AAGTAG</Barcode>
+    <Barcode>GGGACG</Barcode>
+    <Barcode>CCGTGG</Barcode>
+    <Barcode>ATTGTA</Barcode>
+    <Barcode>TTTAGA</Barcode>
+    <Barcode>CCACGA</Barcode>
+    <Barcode>TCATGG</Barcode>
+    <Barcode>GAACCA</Barcode>
+    <Barcode>TCCTAA</Barcode>
+    <Barcode>CAACGC</Barcode>
+    <Barcode>AGTGTT</Barcode>
+    <Barcode>GGATTA</Barcode>
+    <Barcode>TATATA</Barcode>
+    <Barcode>GTACAA</Barcode>
+  </Barcodes>
+  <!--Variants contains all the different sequence variants we are looking for-->
+  <Variants>
+    <!--Each variant node contains a type node with the sequence for the expected variant, the sequence should start -->
+    <Variant>
+      <Type>ACGCTGCAAGAGTGAACAACGCGCCC</Type>
+      <Type>ACGCTGCAAGAGTGAACAACGCCCGC</Type>
+    </Variant>
+    <Variant>
+      <Type>CAGATCTGAACTTCCCAGCAAGTT</Type>
+      <Type>CAGATCTGAACTTCCCAGCAAGCT</Type>
+    </Variant>
+  </Variants>
+  <!--Options can be specified for other options, but since this is the simple file we will leave it blank for now-->
+  <Options />
+</AFSeq>

@@ -1,0 +1,1 @@
+﻿This file is the main class library used by the console application and the GUI.

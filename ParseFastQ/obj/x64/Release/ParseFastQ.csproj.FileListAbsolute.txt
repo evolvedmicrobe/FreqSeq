@@ -1,0 +1,22 @@
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\bin\x64\Release\ParseFastQ.exe
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\bin\x64\Release\ParseFastQ.pdb
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\ResolveAssemblyReference.cache
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.Form1.resources
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.Properties.Resources.resources
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\GenerateResource.read.1.tlog
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\GenerateResource.write.1.tlog
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.exe
+C:\Users\Clarity\documents\visual studio 2010\Projects\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.pdb
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.exe
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.pdb
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\bin\x64\Release\ParseFastQ.exe
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\bin\x64\Release\ParseFastQ.pdb
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ResolveAssemblyReference.cache
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.Form1.resources
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.Properties.Resources.resources
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\GenerateResource.read.1.tlog
+C:\Network_Data\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\GenerateResource.write.1.tlog
+Y:\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.exe
+Y:\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.pdb
+C:\Network_Data\Lon\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.exe
+C:\Network_Data\Lon\Allele Frequency - LMC\ParseFastQ\ParseFastQ\obj\x64\Release\ParseFastQ.pdb

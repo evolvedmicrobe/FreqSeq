@@ -1,0 +1,7 @@
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\bin\Debug\afseqc.exe
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\bin\Debug\afseqc.pdb
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\bin\Debug\ParseFastQ.exe
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\bin\Debug\ParseFastQ.pdb
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\obj\x86\Debug\afseqc.exe
+C:\Users\Clarity\Documents\My Dropbox\AFSeq\afseqc\obj\x86\Debug\afseqc.pdb
