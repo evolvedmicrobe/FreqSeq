@@ -1,0 +1,35 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="afseqc/Program.cs">
+    <Files>
+      <File FileName="afseqc/Program.cs" Line="208" Column="37" />
+      <File FileName="ParseFastQ/AlleleFinder.cs" Line="205" Column="68" />
+      <File FileName="ParseFastQ/BarCodeAndAlleleGroups.cs" Line="631" Column="67" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="FREQSeq" expanded="True">
+            <Node name="FastQParser.cs" selected="True" />
+          </Node>
+          <Node name="freqseqc" expanded="True">
+            <Node name="Properties" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
