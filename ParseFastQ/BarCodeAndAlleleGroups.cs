@@ -1,4 +1,4 @@
-﻿//#define DEBUG 
+//#define DEBUG 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,19 +114,18 @@ namespace FREQSeq
             string toOut = "";
             toOut+="Read Assignment Counts By Barcode\n";
             //Create output functions
-            List<OutputColumn> Cols = new List<OutputColumn>()
-                                          {
-                                              new OutputColumn("Barcode",x=>x.Identifier),
-                                              new OutputColumn("Total Assigned Reads",x=>x.TotalReadsAssigned.ToString()),
-                                              new OutputColumn("Total Unassigned Reads",x=>x.AlleleCounts[AlleleFinder.unknownID].totalInexactAssignments.ToString() ),
-                                              new OutputColumn("Percentage Assigned",x=>(x.TotalUnassignedReads/(double)x.TotalReadsAssigned).ToString()),
-                                              new OutputColumn("Avg QC Score",x=>x.AvgAllAssignedReadQuality.ToString()),
-                                              new OutputColumn("Avg Exact QC Score",x=>x.AvgExactAssignedReadQuality.ToString()),
-                                              new OutputColumn("Avg Inexact QC Score",x=>x.AvgInExactAssignedReadQuality.ToString()),
-                                              new OutputColumn("Avg Unassigned QC Score",x=>x.AvgUnassignedReadQCScore.ToString()),
-                                              new OutputColumn("Exactly Assigned Reads",x=>x.CountofReadsExactlyAssigned.ToString()),
-                                              new OutputColumn("Inexactly Assigned Reads",x=>(x.CountofReadsNotExactlyAssigned-x.TotalUnassignedReads).ToString())
-                                          };
+			List<OutputColumn> Cols = new List<OutputColumn> () {
+				new OutputColumn ("Barcode", x => x.Identifier),
+				new OutputColumn ("Total Reads Assigned to Barcode", x => x.TotalReadsAssigned.ToString ()),
+				new OutputColumn ("Total Reads Unassigned to Alleles in Barcode", x => x.AlleleCounts [AlleleFinder.unknownID].totalInexactAssignments.ToString ()),
+				new OutputColumn ("Percentage Assigned", x => (x.TotalUnassignedReads / (double)x.TotalReadsAssigned).ToString ()),
+				new OutputColumn ("Avg QC Score", x => x.AvgAllAssignedReadQuality.ToString ()),
+				new OutputColumn ("Avg Exact QC Score", x => x.AvgExactAssignedReadQuality.ToString ()),
+				new OutputColumn ("Avg Inexact QC Score", x => x.AvgInExactAssignedReadQuality.ToString ()),
+				new OutputColumn ("Avg Unassigned QC Score", x => x.AvgUnassignedReadQCScore.ToString ()),
+				new OutputColumn ("Exactly Assigned Reads", x => x.CountofReadsExactlyAssigned.ToString ()),
+				new OutputColumn ("Inexactly Assigned Reads", x => (x.CountofReadsNotExactlyAssigned - x.TotalUnassignedReads).ToString ())
+			};
             foreach(OutputColumn c in Cols)
             {SW.Write(c.Name+",");}
             SW.Write("\n");
@@ -640,10 +639,6 @@ namespace FREQSeq
             //Are we going to assign inexact matches?
             if(AssignInexactMatches)
             {
-#if DEBUG
-                if(seq.StartsWith("AGAGTT"))
-                this.tmp.addSeq(seq);
-#endif
                 //Make sure quality is high enough to even bother with an inexact match
                 if(read.AvgQuality<MinAvgQCScoreToAttemptInexactMatch || read.PercN<=MaxNPercentageToAttemptInExactMatch)
                 {
@@ -686,21 +681,18 @@ namespace FREQSeq
             return new Assignment(AlleleFinder.unknownID,false);
         }
         public static string[] CreateKMERS(string seq)
-        {
-            int totalMers=seq.Length-KMER_SIZE+1;
-            if(totalMers>0)
-            {
-                string[] to=new string[totalMers];
-                for(int i=0;i<to.Length;i++)
-                {
-                    to[i]=seq.Substring(i,KMER_SIZE);
-                }
-                return to;
-            }
-            else{throw new Exception("Tried to hash read of length: "+seq.Length.ToString()+" into KMERS of size "+KMER_SIZE.ToString());
-        }
-
-        
-    }
+		{
+			int totalMers = seq.Length - KMER_SIZE + 1;
+			if (totalMers > 0) {
+				string[] to = new string[totalMers];
+				for (int i = 0; i < to.Length; i++) {
+					to [i] = seq.Substring (i, KMER_SIZE);
+				}
+				return to;
+			} else {
+				Console.WriteLine ("Failure to hash: " + seq);
+				throw new Exception ("Tried to hash read of length: " + seq.Length.ToString () + " into KMERS of size " + KMER_SIZE.ToString ());
+			}
+		}
     }
 }
