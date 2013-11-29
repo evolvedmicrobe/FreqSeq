@@ -19,6 +19,7 @@ namespace FREQSeq
         public List<BarCodeGroup> BarCodes = new List<BarCodeGroup>();
         private bool Frozen;
         public long UnAssignedReadCount;
+		public long TooShortCount;
         public long TotalReads;
         public long M13_Excluded;
         private object ReadCountLock=new object();
@@ -75,10 +76,10 @@ namespace FREQSeq
             //BarCodeAssigner bca=new BarCodeAssigner(AllBarCodes,this.RequireExactMatchForAssignment);
             //return bca;
         }
-        public void AddIdentifyingDictionary(Dictionary<string,Dictionary<string,AssignmentResults>> toAdd,int unassignedcount,int TotalProcessedCount,int noM13 )
+		public void AddIdentifyingDictionary(Dictionary<string,Dictionary<string,AssignmentResults>> toAdd,int unassignedcount,int TotalProcessedCount,int noM13,int tooShortCount )
         {
             lock (ReadCountLock)
-            { UnAssignedReadCount += unassignedcount; TotalReads += TotalProcessedCount; M13_Excluded += noM13; }
+			{ UnAssignedReadCount += unassignedcount; TotalReads += TotalProcessedCount; M13_Excluded += noM13; TooShortCount += tooShortCount; }
             foreach (KeyValuePair<string, Dictionary<string,AssignmentResults>> set in toAdd)
             {
 
@@ -103,7 +104,8 @@ namespace FREQSeq
             FireLogEvent("Writing output file: "+outputFileName);
             StreamWriter SW = new StreamWriter(outputFileName);
             SW.WriteLine("Total Reads," + TotalReads.ToString());
-            SW.WriteLine("Total Reads Not Assigned to Barcodes," + UnAssignedReadCount.ToString());
+			SW.WriteLine ("Reads Too Short For Consideration," + TooShortCount.ToString ());
+			SW.WriteLine("Total Reads Not Assigned to Barcodes," + UnAssignedReadCount.ToString());
             SW.WriteLine("Percentage Not Assigned to Barcodes,"+(UnAssignedReadCount/(double)TotalReads).ToString());
             SW.WriteLine("Reads Excluded for no M13," + M13_Excluded.ToString());
             var unAssignedWithin = BarCodes.Select(x => x.TotalUnassignedReads).Sum();
@@ -523,6 +525,7 @@ namespace FREQSeq
             this.SubMatForAlignment=new SimpleSubstitutionMatrix(parentAF.MatchScore,parentAF.MisMatchPenalty,parentAF.GapStartPenalty,parentAF.GapExtendPenalty);
             this.MaxNPercForInexactMatches=parentAF.MaxPercentageNForInexactMatches;
             this.MinAverageQCScoreForInexactMatches=parentAF.MinAverageQualityForInexactMatches;
+
             HashedKMERS=new Dictionary<string,TypeToAlign>();
             foreach(string str in this.AllSequences)
             {

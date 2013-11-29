@@ -41,7 +41,8 @@ namespace FREQSeq
                 while ((line = SR.ReadLine()) != null)
                 {
                     ///The array might be too big
-                    if (line.StartsWith("\0")) { break; }
+					//Not sure why below was in there, it is an igornable character
+					//if (line.StartsWith("\0",StringComparison.InvariantCulture)) { break; }
                     string line2, line3, line4;
                     line2 = SR.ReadLine();
                     //cheap way to skip lines
@@ -89,7 +90,7 @@ namespace FREQSeq
                 while (SR.Peek() != -1)
                 {
                     int ReturnedCount = SR.Read(ReadsToReturn, 0, SizeToRead);
-                    int CurrentPos = SizeToRead;
+					int CurrentPos = ReturnedCount;
                     //Bullshit because of use of '+' and '@' as QC quality score characters
                     //Here is the plan, going to add 8 more lines, figure out where I am 
                     //based on that, then add an appropriate number of additional lines
@@ -138,7 +139,8 @@ namespace FREQSeq
                             }
                         }
                     }
-                    byte[] arr = ENC.GetBytes(ReadsToReturn);
+					byte[] arr = ENC.GetBytes(ReadsToReturn);
+					Array.Resize (ref arr, CurrentPos*2);
                     MemoryStream MS = new MemoryStream(arr);
                     StreamReader SR2 = new StreamReader(MS, ENC, false);
                     Array.Clear(ReadsToReturn, 0, ReadsToReturn.Length);
@@ -159,8 +161,9 @@ namespace FREQSeq
             while ((line = FastQPortionStream.ReadLine()) != null)
             {
                 ///The array might be too big
-                if (line.StartsWith("\0")) { break; }
-                string line2, line3, line4;
+				//if (line.StartsWith('\0')) { break; } //This is always true in MONO
+				if (line[0]=='\0')  break;
+				string line2, line3, line4;
                 line2 = FastQPortionStream.ReadLine();
                 //cheap way to skip lines
                 line3 = FastQPortionStream.ReadLine();
@@ -227,6 +230,7 @@ namespace FREQSeq
             //QC line same length as sequence line
             if(line2.Length!=line4.Length)
             {
+				//verify this isn't some dumb string issue, I should really just resize that array before handing it off
                 int u = line2.Length;
                 int k = line4.Length;
                 string ExceptionMessage = "FastQ QC line length ("+k.ToString()+") does not equal to sequence length("+u.ToString()+")";

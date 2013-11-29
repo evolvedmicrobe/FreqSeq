@@ -49,7 +49,7 @@ Global
 		{2AC1F66B-6926-4F02-A537-A7F09D0BCEA3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ParseFastQ\FREQSeq.csproj
+		StartupItem = afseqc\freqseqc.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

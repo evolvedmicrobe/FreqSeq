@@ -1,0 +1,7 @@
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/obj/x86/Debug/.NETFramework,Version=v4.0,Profile=Client.AssemblyAttribute.cs
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/bin/Debug/freqseqc.exe.mdb
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/bin/Debug/freqseqc.exe
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/obj/x86/Debug/freqseqc.exe
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/obj/x86/Debug/freqseqc.exe.mdb
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/bin/Debug/FreqSeq.dll
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/bin/Debug/FreqSeq.dll.mdb

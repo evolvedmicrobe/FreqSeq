@@ -1,4 +1,4 @@
-﻿//#define DEBUG 
+//#define DEBUG 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,7 @@ namespace FREQSeq
         public const int ALLELE_START_POS = 23;
         public const string M13_SEQUENCE="GTAAAACGACGGCCAGT";
         public int InitialReadsToParse { get; set; }
+		public int MinReadLength { get; set; }
         public bool RequireM13Sequence{get;set;}
         public bool AllowReadsWithM13WithinHamming1ToBeAssigned { get; set; }
         public bool AllowBarCodesWithinHamming1ToBeAssigned { get; set; }
@@ -117,6 +118,7 @@ namespace FREQSeq
             this.OutputFileNamePrefix = "Results";
             this.AllowBarCodesWithinHamming1ToBeAssigned = true;
             this.RequireM13Sequence = true;
+			this.MinReadLength = 75;
             this.AllowReadsWithM13WithinHamming1ToBeAssigned=true;
         }
         /// <summary>
@@ -188,11 +190,16 @@ namespace FREQSeq
                 BarCodeAssigner bca = BC.SpawnBarCodeAssigner();
                 //now loop through them
                 int UnassignedReads = 0;
+				int ReadsTooShort = 0;
                 int NoM13Reads = 0;
                 var CountingDictionary = BC.ReturnIdentifyingDictionary();
                 int totalReads = reads.Count;
                 foreach (FastQRead read in reads)
                 {
+					if (read.Sequence.Length < MinReadLength) {
+						ReadsTooShort++;
+						continue;
+					}
                     if (RequireM13Sequence && !ContainsM13Sequence(read))
                     {
                         UnassignedReads++;
@@ -223,7 +230,7 @@ namespace FREQSeq
                     }
                 }
                 //Now To update
-                BC.AddIdentifyingDictionary(CountingDictionary, UnassignedReads, totalReads, NoM13Reads);
+				BC.AddIdentifyingDictionary(CountingDictionary, UnassignedReads, totalReads, NoM13Reads,ReadsTooShort);
 #if DEBUG
                 
             }

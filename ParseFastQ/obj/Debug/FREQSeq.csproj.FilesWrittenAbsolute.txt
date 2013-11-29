@@ -1,0 +1,6 @@
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/obj/Debug/FREQSeq.Properties.Resources.resources
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/bin/Debug/FreqSeq.dll.mdb
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/bin/Debug/FreqSeq.dll
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/obj/Debug/FreqSeq.dll
+/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/obj/Debug/FreqSeq.dll.mdb
