@@ -1,9 +1,0 @@
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\bin\x64\Debug\ParseFastQ.exe
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\bin\x64\Debug\ParseFastQ.pdb
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\ResolveAssemblyReference.cache
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\AFSeq.Form1.resources
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\AFSeq.Properties.Resources.resources
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\GenerateResource.read.1.tlog
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\GenerateResource.write.1.tlog
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\ParseFastQ.exe
-C:\Users\Clarity\Documents\My Dropbox\AFSeq\ParseFastQ\obj\x64\Debug\ParseFastQ.pdb

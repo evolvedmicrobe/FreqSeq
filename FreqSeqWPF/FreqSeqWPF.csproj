@@ -168,12 +168,6 @@
     <Resource Include="SequenceAssemblerStartUp.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ParseFastQ\FREQSeq.csproj">
-      <Project>{2AC1F66B-6926-4F02-A537-A7F09D0BCEA3}</Project>
-      <Name>FREQSeq</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PublishFile Include="de\System.Windows.Interactivity.resources">
       <Visible>False</Visible>
       <Group>
@@ -291,6 +285,12 @@
     <Resource Include="Example.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FREQSeq\FREQSeq.csproj">
+      <Project>{2ac1f66b-6926-4f02-a537-a7f09d0bcea3}</Project>
+      <Name>FREQSeq</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
