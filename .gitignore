@@ -2,3 +2,5 @@
 *.dll
 */bin/*
 */obj/*
+*/publish/*
+FreqSeqWPF/publish/*

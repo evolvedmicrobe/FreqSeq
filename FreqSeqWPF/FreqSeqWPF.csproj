@@ -30,7 +30,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.people.fas.harvard.edu/~ndelaney/FreqSeq/</InstallUrl>
+    <InstallUrl>http://www.evolvedmicrobe.com/FreqSeq/InstallFreqOut.html/</InstallUrl>
     <SupportUrl>http://www.people.fas.harvard.edu/~ndelaney/FreqSeq/index.html</SupportUrl>
     <ProductName>Freq-Out Barcode Parser</ProductName>
     <PublisherName>Nigel Delaney</PublisherName>

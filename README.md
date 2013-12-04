@@ -23,6 +23,7 @@ Bugs Fixed:
 
 Improvements:
 
+* Reads gzipped fastq files (ending with .gz)
 * Changed command line executable name to freqout
 * Trimmed long sequences to within only 10 bp longer than the expected read to improve alignment speed and accuracy
 * Increased hashing k-mer length to 9 to reduce the number of alignment candidates identified
