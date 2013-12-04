@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ParseFastQ/FastQParser.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="freqout/Program.cs">
     <Files>
-      <File FileName="afseqc/Program.cs" Line="209" Column="1" />
-      <File FileName="ParseFastQ/AlleleFinder.cs" Line="173" Column="1" />
-      <File FileName="ParseFastQ/BarCodeAndAlleleGroups.cs" Line="107" Column="84" />
-      <File FileName="ParseFastQ/XML_Parser.cs" Line="109" Column="78" />
-      <File FileName="ParseFastQ/FastQParser.cs" Line="224" Column="42" />
+      <File FileName="freqout/Program.cs" Line="21" Column="3" />
+      <File FileName="FREQSeq/Options.cs" Line="811" Column="3" />
+      <File FileName="FREQSeq/AlignmentClasses.cs" Line="37" Column="23" />
+      <File FileName="FREQSeq/BarCodeAndAlleleGroups.cs" Line="671" Column="1" />
+      <File FileName="FREQSeq/AlleleFinder.cs" Line="230" Column="7" />
+      <File FileName="freqout/app.config" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,6 +15,7 @@
       <Breakpoint file="/Users/ndelaney/Dropbox/Software/FreqSeqCode/afseqc/Program.cs" line="209" column="1" />
       <Breakpoint file="/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/FastQParser.cs" line="236" column="1" />
       <Breakpoint file="/Users/ndelaney/Dropbox/Software/FreqSeqCode/ParseFastQ/FastQParser.cs" line="67" column="1" />
+      <Breakpoint file="/Users/ndelaney/Dropbox/Software/FreqSeqCode/freqout/Program.cs" line="78" column="44" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
