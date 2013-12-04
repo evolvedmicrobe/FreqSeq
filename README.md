@@ -8,8 +8,8 @@ http://www.evolvedmicrobe.com/FreqSeq/index.html
 The source code is divided in to several folders.
 
 * FreqSeqWPF - the WPF client on windows
-* ParseFastQ - The library file containing the methods used by the GUI and command line programs.
-* afseqc - The command line program.
+* FreqSeq- The library file containing the methods used by the GUI and command line programs.
+* freqout - The command line program.
 
 Two solution files are available, one for Xamarin studio, the other for Visual Studio.
 
