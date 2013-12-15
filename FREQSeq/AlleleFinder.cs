@@ -72,7 +72,7 @@ namespace FREQSeq
 
 		FastQParser FQP;
 		BarCodeCollection BC;
-		AlleleCollection AC;
+		LocusCollection AC;
 		List<string> FileNames = new List<string> ();
 
 		public void SetFileNames (List<string> FNames)
@@ -89,9 +89,9 @@ namespace FREQSeq
 			//Now to parse through and attempt to get the relevant Statistics 
 			List<FastQRead> firstReads = FQP.GetFirstReadsFromFile ();
 			var QCAvg = (from x in firstReads
-			                       select x.AvgQuality).ToList ();
+			             select x.AvgQuality).ToList ();
 			var percNAvg = (from x in firstReads
-			                          select x.PercN).ToList ();
+			                select x.PercN).ToList ();
 			float avgQC = (float)QCAvg.Average ();
 			QCAvg.Sort ();
 			FireLogEvent ("Average scaled QC values based on initial reads is: " + avgQC.ToString ());
@@ -104,7 +104,7 @@ namespace FREQSeq
 
 		}
 
-		public AlleleFinder (BarCodeCollection BCC, AlleleCollection AC, List<string> FNames = null)
+		public AlleleFinder (BarCodeCollection BCC, LocusCollection AC, List<string> FNames = null)
 		{
 			this.BC = BCC;
 			this.AC = AC;
@@ -195,17 +195,22 @@ namespace FREQSeq
 
            // Parallel.ForEach(FQP.GetStreamReaderForSequences(700000000), FR =>
 #else
-            Parallel.ForEach(FQP.GetStreamReaderForSequences(70000), FR =>
+			ParallelOptions po = new ParallelOptions ();
+			po.MaxDegreeOfParallelism = Environment.ProcessorCount;
+			SimplePartitioner<StreamReader> sp = new SimplePartitioner<StreamReader> (FQP.GetStreamReaderForSequences (700000));
+
+			Parallel.ForEach (sp, po, FR =>
 #endif
 
             {
 				//First convert the lines of text (already in memory) to FastQReads;
-				List<FastQRead> reads = FastQParser.GetFastQReadsFromStream (FR);
-				//drop reference after conversion so GC can free memory
-				FR.Dispose ();
+				//List<FastQRead> reads = FastQParser.GetFastQReadsFromStream (FR);
+				var reads = FastQParser.GetFastQReadsFromStream (FR);
+				
+                
 #if !DEBUG
-                FR = null;
-                AlleleTypeAssigner ata = AC.SpawnTypeAssigner();
+              
+				AlleleTypeAssigner ata = AC.SpawnTypeAssigner ();
 #endif
 
 				BarCodeAssigner bca = BC.SpawnBarCodeAssigner ();
@@ -214,8 +219,9 @@ namespace FREQSeq
 				int ReadsTooShort = 0;
 				int NoM13Reads = 0;
 				var CountingDictionary = BC.ReturnIdentifyingDictionary ();
-				int totalReads = reads.Count;
+				int totalReads = 0;
 				foreach (FastQRead read in reads) {
+					totalReads++;
 					if (read.Sequence.Length < MinReadLength) {
 						ReadsTooShort++;
 						continue;
@@ -242,15 +248,20 @@ namespace FREQSeq
 						UnassignedReads++;
 					}
 				}
+				//drop reference after conversion so GC can free memory
+                
+				FR.Dispose ();
+				FR = null;
 				//Now To update
 				BC.AddIdentifyingDictionary (CountingDictionary, UnassignedReads, totalReads, NoM13Reads, ReadsTooShort);
+				GC.Collect ();
 #if DEBUG
                 
 			}
 			ata.tmp.report ();
 #else
-                }
-                );
+			}
+			);
 #endif
             
            

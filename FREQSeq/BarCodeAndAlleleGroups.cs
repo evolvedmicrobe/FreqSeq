@@ -19,11 +19,13 @@ namespace FREQSeq
 		private bool Frozen;
 		public long UnAssignedReadCount;
 		public long TooShortCount;
+        private System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 		public long TotalReads;
+        public long LastReportValue = 1;
 		public long M13_Excluded;
 		private object ReadCountLock = new object ();
 		public List<string> AllBarCodes = new List<string> ();
-		public AlleleCollection AC;
+		public LocusCollection AC;
 
 		public event LogEventHandler LogEvent;
 
@@ -43,6 +45,7 @@ namespace FREQSeq
 		public BarCodeCollection ()
 		{
 			BarCodeSubstitutionMatrix = new SimpleSubstitutionMatrix (2, -1, -4, -2);
+            sw.Start();
 		}
 
 		public void AddBarCodeGroup (BarCodeGroup BCG)
@@ -88,6 +91,15 @@ namespace FREQSeq
 				TotalReads += TotalProcessedCount;
 				M13_Excluded += noM13;
 				TooShortCount += tooShortCount;
+                if (TotalReads / 500000 > LastReportValue)
+                {
+                    sw.Stop();
+                    LastReportValue++;
+                    Console.WriteLine("Processed: " + TotalReads.ToString() + " reads.");
+                    Console.WriteLine("Time elapsed for batch: {0}", sw.Elapsed);
+                    sw.Reset();
+                    sw.Start();
+                }
 			}
 			foreach (KeyValuePair<string, Dictionary<string,AssignmentResults>> set in toAdd) {
 				var BCG = (from x in BarCodes
@@ -279,7 +291,7 @@ namespace FREQSeq
 	{
 		public readonly string Identifier;
 		public Dictionary<string, AssignmentResults> AlleleCounts;
-		public AlleleCollection alleleCollection;
+		public LocusCollection alleleCollection;
 
 		/// <summary>
 		/// Create a new barcode group
@@ -295,7 +307,7 @@ namespace FREQSeq
 			this.Identifier = Barcode;            
 		}
 
-		public void AssignParentCollection (AlleleCollection ac)
+		public void AssignParentCollection (LocusCollection ac)
 		{
 			this.alleleCollection = ac;
 			this.AlleleCounts = CreateAlleleCountDictionary ();
@@ -429,66 +441,100 @@ namespace FREQSeq
 		}
 	}
 
-	public sealed class AlleleCollection
+	public sealed class LocusCollection
 	{
-		public List<string> AllSequences = new List<string> ();
-		public List<Allele> Alleles = new List<Allele> ();
+        public List<string> AllSequences
+        {
+            get {
+                return Loci.SelectMany(x => x.Alleles).ToList();
+            }
+        }
+		public List<Locus> Loci = new List<Locus> ();
 		public Dictionary<string,List<TypeToAlign>> HashedKMERS;
 		public SimpleSubstitutionMatrix SubMatForAlignment;
+
+        private int pMaxAllowableSize;
+        public int MaxReadSize
+        {
+            get { return pMaxAllowableSize; }
+        }
 		public float MinAverageQCScoreForInexactMatches;
 		public float MaxNPercForInexactMatches;
 		public bool AttemptInExactMatches;
 		private bool Frozen;
 
-		public class Allele
+        /// <summary>
+        /// The class the holds the locus and the alleles present at that locus 
+        /// </summary>
+		public class Locus
 		{
+            /// <summary>
+            /// This will be used to determine if this is a SNP variant or not.
+            /// SNP variants have only two members, and are distinguished by a simple difference.
+            /// </summary>
+            public bool IsSNPVariant = false;
+
 			/// <summary>
 			/// The types of genetic variants present (usually only 2);
 			/// </summary>
-			public List<string> Types = new List<string> ();
+			public List<string> Alleles = new List<string> ();
 
-			public Allele ()
+			public Locus ()
 			{
 			}
 
-			public void AddType (string type)
+			public void AddTypes (List<string> types)
 			{
-				foreach (string str in Types) {
-					if (str.StartsWith (type))
-						throw new IOException ("Type: " + type + " appears twice in the same variant!");
+                HashSet<string> validSet = new HashSet<string>(types);
+                if(validSet.Count!=types.Count)
+                {
+                    for (int i = 0; i < types.Count; i++) {
+                        for (int j = i; j < types.Count; j++) {
+                            if (types[j].Length != types[i].Length) {
+                                throw new IOException("Two types have different lengths, which can skew assignment results.  Please make all variants at a " +
+                                    "locus have the same input length.  Problems with: \t" + types[j] + "\n" + types[i]);
+                            }
+                            if (types[j].StartsWith(types[i])) {
+                                throw new IOException("Two variants are the same, please fix this:\n " + types[j] +"\n"+ types[i]);
+                            }
+                        }
+                    }
 				}
-				this.Types.Add (type);
+                this.Alleles.AddRange(types);
+                if (Alleles.Count == 2 && AlleleTypeAssigner.GetHammingDistance(Alleles[0], Alleles[1]) == 1)
+                {
+                    IsSNPVariant = true;
+                }
 			}
 		}
-
-		public AlleleCollection ()
+		public LocusCollection ()
 		{
 		}
 
-		public void AddAllele (Allele toAdd)
+		public void AddLocus (Locus toAdd)
 		{
 			if (Frozen)
 				throw new Exception ("Tried to add allele after collection was frozen");
-			foreach (string type in toAdd.Types) {
+			foreach (string type in toAdd.Alleles) {
 				foreach (string alr in this.AllSequences) {
 					if (alr.StartsWith (type)) {
 						throw new IOException ("Type: " + type + " appears in different variants!");
 					}
 				}
 			}
-			this.Alleles.Add (toAdd);
-			this.AllSequences.AddRange (toAdd.Types);
+			this.Loci.Add (toAdd);
+			this.AllSequences.AddRange (toAdd.Alleles);
 		}
 
 		public void WriteReport (StreamWriter SW, BarCodeCollection BC)
 		{
 			int SetCount = 1;
-			foreach (Allele A in Alleles) {
+			foreach (Locus A in Loci) {
 				SW.WriteLine ("Allele Group " + SetCount.ToString ());
-				int NumTypes = A.Types.Count;
+				int NumTypes = A.Alleles.Count;
 				int i = 1;
 				string header = "Barcode,";
-				foreach (string t in A.Types) {
+				foreach (string t in A.Alleles) {
 					SW.WriteLine ("Type " + i.ToString () + ": " + t);
 					header += "Type " + i.ToString () + "%,";
 					i++;
@@ -498,7 +544,7 @@ namespace FREQSeq
 				foreach (BarCodeGroup BCG in BC.BarCodes) {
 					ulong[] counts = new ulong[NumTypes];
 					int j = 0;
-					foreach (var type in A.Types) {
+					foreach (var type in A.Alleles) {
 						counts [j] = (ulong)BCG.AlleleCounts [type].totalAssignments;
 						j++;
 
@@ -523,23 +569,31 @@ namespace FREQSeq
 			this.SubMatForAlignment = new SimpleSubstitutionMatrix (parentAF.MatchScore, parentAF.MisMatchPenalty, parentAF.GapStartPenalty, parentAF.GapExtendPenalty);
 			this.MaxNPercForInexactMatches = parentAF.MaxPercentageNForInexactMatches;
 			this.MinAverageQCScoreForInexactMatches = parentAF.MinAverageQualityForInexactMatches;
-
 			HashedKMERS = new Dictionary<string, List<TypeToAlign>> ();
-			foreach (string str in this.AllSequences) {
-				//Figure out minimum score required, in practice this might kill indel reads 
-				float MinScoreRequired = SubMatForAlignment.MatchScore * str.Length - SubMatForAlignment.gapExistPenalty - SubMatForAlignment.gapExistPenalty - SubMatForAlignment.MisMatchScore;
-				TypeToAlign t = new TypeToAlign (str, MinScoreRequired);
-				string[] mers = AlleleTypeAssigner.CreateKMERS (str);
-				foreach (string mer in mers) {
-					if (HashedKMERS.ContainsKey (mer)) {
-						HashedKMERS [mer].Add (t);
-					} else {
-						HashedKMERS [mer] = new List<TypeToAlign> () { t };
-					}
-				}
-			}
-		}
+            foreach (Locus lc in Loci)
+            {
+                foreach (string str in lc.Alleles)
+                {
+                    //Figure out minimum score required, harcoded at 75% of perfect
 
+                    float MinScoreRequired = SubMatForAlignment.MatchScore * str.Length * .75F;// +SubMatForAlignment.gapExistPenalty + SubMatForAlignment.gapExistPenalty + SubMatForAlignment.MisMatchScore;
+                    TypeToAlign t = new TypeToAlign(str, MinScoreRequired,lc);
+                    string[] mers = AlleleTypeAssigner.CreateKMERS(str);
+                    foreach (string mer in mers)
+                    {
+                        if (HashedKMERS.ContainsKey(mer))
+                        {
+                            HashedKMERS[mer].Add(t);
+                        }
+                        else
+                        {
+                            HashedKMERS[mer] = new List<TypeToAlign>() { t };
+                        }
+                    }
+                }
+            }
+            pMaxAllowableSize = AllSequences.Max(x => x.Length) + 10;
+		}
 		/// <summary>
 		/// Try to put memory near the rest of what the thread is working on by spawing off a type
 		/// </summary>
@@ -559,11 +613,12 @@ namespace FREQSeq
 	{
 		public readonly float MinScoreForAssignment;
 		public readonly string TypeSeq;
-
-		public TypeToAlign (string seq, float minScoreRequired)
+        public readonly LocusCollection.Locus Locus;
+        public TypeToAlign (string seq, float minScoreRequired, LocusCollection.Locus parentLocus)
 		{
 			this.MinScoreForAssignment = minScoreRequired;
-			this.TypeSeq = seq;            
+			this.TypeSeq = seq;
+            Locus = parentLocus;
 		}
 	}
 
@@ -581,18 +636,22 @@ namespace FREQSeq
 		private readonly bool AssignInexactMatches;
 		private readonly float MaxNPercentageToAttemptInExactMatch;
 		private readonly string[] AllTypes;
-		//private readonly HashSet<TypeToAlign> toAttempt=new HashSet<TypeToAlign>();
 		private readonly SimpleSubstitutionMatrix subMat;
+        /// <summary>
+        /// If the reads are much larger than the alleles, we trim them down.
+        /// </summary>
+        private readonly int MaxAllowableSequenceLength;
 
-		public AlleleTypeAssigner (AlleleCollection parentAC)
-		{            
-			this.AssignInexactMatches = parentAC.AttemptInExactMatches;
+		public AlleleTypeAssigner (LocusCollection parentLC)
+		{
+            this.MaxAllowableSequenceLength = parentLC.MaxReadSize;
+			this.AssignInexactMatches = parentLC.AttemptInExactMatches;
 			//not deep copying type to align, not sure what, if any, performace implications this has
-			this.HashedKMERS = parentAC.HashedKMERS.ToDictionary (x => x.Key, x => x.Value);
-			this.MaxNPercentageToAttemptInExactMatch = parentAC.MaxNPercForInexactMatches;
-			this.MinAvgQCScoreToAttemptInexactMatch = parentAC.MinAverageQCScoreForInexactMatches;
-			this.subMat = parentAC.SubMatForAlignment.Clone ();
-			this.AllTypes = parentAC.AllSequences.ToArray ();
+			this.HashedKMERS = parentLC.HashedKMERS.ToDictionary (x => x.Key, x => x.Value);
+			this.MaxNPercentageToAttemptInExactMatch = parentLC.MaxNPercForInexactMatches;
+			this.MinAvgQCScoreToAttemptInexactMatch = parentLC.MinAverageQCScoreForInexactMatches;
+			this.subMat = parentLC.SubMatForAlignment.Clone ();
+			this.AllTypes = parentLC.AllSequences.ToArray ();
 			//make minimum dif equal to a SNP
 			this.MinScoreDifferenceRequired = this.subMat.MatchScore - this.subMat.MisMatchScore;
 		}
@@ -634,6 +693,7 @@ namespace FREQSeq
 		{
 			//get sequence
 			string seq = read.Sequence.Substring (AlleleFinder.ALLELE_START_POS);
+            if (seq.Length > MaxAllowableSequenceLength) { seq = seq.Substring(0, MaxAllowableSequenceLength); }
 			//try for exact match 
 			foreach (string s in AllTypes) {
 				if (seq.StartsWith (s)) {
@@ -643,45 +703,151 @@ namespace FREQSeq
 			//Are we going to assign inexact matches?
 			if (AssignInexactMatches) {
 				//Make sure quality is high enough to even bother with an inexact match
-				if (read.AvgQuality < MinAvgQCScoreToAttemptInexactMatch || read.PercN <= MaxNPercentageToAttemptInExactMatch) {
+				if (read.AvgQuality >= MinAvgQCScoreToAttemptInexactMatch && read.PercN <= MaxNPercentageToAttemptInExactMatch) {
 					//Get KMERS
 					string[] kmers = CreateKMERS (seq);
-					HashSet<TypeToAlign> toAttempt = new HashSet<TypeToAlign> ();
 					//Use kmers to get small set to align to
-                    
+                    Dictionary<TypeToAlign, int> countingDict = new Dictionary<TypeToAlign, int>();
 					foreach (string mer in kmers) {
 						List<TypeToAlign> att;
 						if (HashedKMERS.TryGetValue (mer, out att)) {
 							foreach (var at in att) {
-								toAttempt.Add (at);
+                                if (countingDict.ContainsKey(at)) {
+                                    countingDict[at] += 1;
+                                }
+                                else {
+                                    countingDict[at] = 1;
+                                }
 							}
 						}
 					}
-					//No matching kmers
-					if (toAttempt.Count == 0) {
-						return new Assignment (AlleleFinder.unknownID, false);
-					} else {
-						//Pairwise alignment for each
-						var Res = (from x in toAttempt
-						                           select new {type = x,score = ScoreOnlySmithWatermanGotoh.GetSmithWatermanScore (x.TypeSeq, seq, subMat)}).ToList ();
-						if (Res.Count > 1) {
-							Res.Sort ((x, y) => -x.score.CompareTo (y.score));
-							float scoreDif = Res [0].score - Res [1].score;
-							//check that it is much better than the last one
-							if (scoreDif >= MinScoreDifferenceRequired) {
-								return new Assignment (AlleleFinder.unknownID, false);
-							}
-						}
-						//See if the best is good enough
-						var Pos = Res [0];
-						if (Res.Count == 1 && Pos.score >= Pos.type.MinScoreForAssignment)
-							return new Assignment (Pos.type.TypeSeq, false);
-					}
+                    kmers = null;
+                    //Now decide between options based on counts.
+                    //Compare based on scores and alignment.
+                    var possibles=countingDict.ToList();
+                    if (possibles.Count == 0)
+                    {
+                        return new Assignment(AlleleFinder.unknownID, false);
+                    }
+                    possibles.Sort((x, y) => -x.Value.CompareTo(y.Value));
+                  
+                    //have to have at least 25% as many k-mer matches as top hit.
+                    int topKmerMatchCountCutoff=(int)(possibles[0].Value*0.25);
+                    var toAttempt = possibles.Where(z => (z.Value >= topKmerMatchCountCutoff)).ToList();
+                    
+                    //TODO: Remove after experimental verification
+                    if (possibles[0].Key != toAttempt[0].Key)
+                    {
+                        throw new InvalidOperationException("The best k-mer hit was not included as the top hit to attempt an inexact assignment.  This is "
+                        + " a program bug, please report it to Nigel.");
+                    }
+                    possibles = null;
+                        //If 1, see if the kmers indicate it is good enough, and if not, try an ungapped alignment
+                        if (toAttempt.Count == 1)
+                        {
+                            var cur=toAttempt[0].Key;
+                            {
+                                if (
+                                    (GetUnGappedAlignmentScore(seq,cur.TypeSeq) >= cur.MinScoreForAssignment ) ||
+                                    (ScoreOnlySmithWatermanGotoh.GetSmithWatermanScore(cur.TypeSeq,seq,subMat) >= cur.MinScoreForAssignment))
+                                {
+                                    return new Assignment(cur.TypeSeq, false);
+                                }
+                                else
+                                {
+                                    return new Assignment(AlleleFinder.unknownID, false);
+                                }                                
+                            }
+                        }
+                        //see if it is a simple SNP, this means the locus (and kmer counts) are entirely the same except at that base
+                        if (toAttempt.Count == 2 && toAttempt[0].Key.Locus == toAttempt[1].Key.Locus
+                            && toAttempt[0].Key.Locus.IsSNPVariant)
+                        {
+                            //let's just do a simple check to make sure we don't assign total garbage, min score has
+                            //to be greater than 50% of max score
+                            var best = toAttempt[0].Key;
+                            var perfectScore = subMat.MatchScore * Math.Min(seq.Length, best.TypeSeq.Length);
+                            var mustBeat = best.MinScoreForAssignment;
+                            if (
+                                (GetUnGappedAlignmentScore(best.TypeSeq, seq) >= mustBeat)
+                                || (ScoreOnlySmithWatermanGotoh.GetSmithWatermanScore(best.TypeSeq, seq, subMat) >= mustBeat))
+                            {
+                                return new Assignment(best.TypeSeq, false);
+                            }
+                            else
+                            {
+                                return new Assignment(AlleleFinder.unknownID, false);
+                            }
+                        }
+                        else
+                        {
+                            //Otherwise time consuming pairwise global alignment
+                            var Res = (from x in toAttempt
+                                       select new { type = x.Key, score = ScoreOnlySmithWatermanGotoh.GetSmithWatermanScore(x.Key.TypeSeq, seq, subMat) }).ToList();
+                            if (Res.Count > 1)
+                            {
+                                Res.Sort((x, y) => -x.score.CompareTo(y.score));
+                                var top = Res[0];
+                                float scoreDif = top.score - Res[1].score;
+                                //check that it is much better than the last one
+                                if (scoreDif >= MinScoreDifferenceRequired && top.score>top.type.MinScoreForAssignment)
+                                {
+                                    return new Assignment(top.type.TypeSeq, false);
+                                }
+                                else{
+                                    return new Assignment(AlleleFinder.unknownID, false);
+                                }
+                            }
+                        }
 				}
 			}
 			return new Assignment (AlleleFinder.unknownID, false);
 		}
+        public float GetUnGappedAlignmentScore(string seq1, string seq2)
+        {
+            var size = Math.Min(seq1.Length, seq2.Length);
+            int dist = 0;
+            for (int i = 0; i < size; i++)
+            {
+                if (seq1[i] != seq2[i]) dist++;
+            }
+            return (size - dist) * subMat.MatchScore + dist * subMat.MisMatchScore;
 
+        }
+
+
+
+        /// <summary>
+        /// Gets the minimimum score based on the number of k-mers matching. Assuming all kmer hits are a in acontinguous line
+        /// </summary>
+        /// <param name="kmerBasedMatch"></param>
+        /// <returns></returns>
+        private float GetMinScore(KeyValuePair<TypeToAlign,int> kmerBasedMatch,int queryLength)
+        {
+            //Assume the lowest is all matches and the rest is a mismatch 
+            //The most possible kmer hits
+            var alnLength=Math.Min(kmerBasedMatch.Key.TypeSeq.Length, queryLength);
+            int actualMers =Math.Max(kmerBasedMatch.Value, alnLength - KMER_SIZE + 1);
+            var minBPHit = actualMers + KMER_SIZE - 1;
+            var maxBPMissed = alnLength-minBPHit;            
+            var minHitScore = minBPHit * subMat.MatchScore + (maxBPMissed) * subMat.MisMatchScore;
+            return minHitScore;
+        }
+        /// <summary>
+        /// Gets the maximum score based on the number of k-mers matching
+        /// </summary>
+        /// <param name="kmerBasedMatch"></param>
+        /// <returns></returns>
+        private float GetMaxScore(KeyValuePair<TypeToAlign, int> kmerBasedMatch,int queryLength)
+        {
+            //every gap or mismatch introduces a penalty of one, which would result in missing a 
+            //a number of kmers equal to the kmer size
+            var minPenalty = Math.Max(subMat.gapExistPenalty, subMat.MisMatchScore);
+            var alnLength = Math.Min(kmerBasedMatch.Key.TypeSeq.Length, queryLength);
+            var missedHits =((alnLength-KMER_SIZE+1) - kmerBasedMatch.Value)/KMER_SIZE;
+            var maxScore = (alnLength-missedHits)* subMat.MatchScore + missedHits * minPenalty;
+            return maxScore;
+        }
 		public static string[] CreateKMERS (string seq)
 		{
 			int totalMers = seq.Length - KMER_SIZE + 1;
@@ -696,5 +862,14 @@ namespace FREQSeq
 				throw new Exception ("Tried to hash read of length: " + seq.Length.ToString () + " into KMERS of size " + KMER_SIZE.ToString ());
 			}
 		}
+
+        public static int GetHammingDistance(string seq1, string seq2) {
+            int dist = 0;
+            for (int i = 0; i < seq1.Length; i++)
+            {
+                if (seq1[i] != seq2[i]) dist++;
+            }
+            return dist;
+        }
 	}
 }

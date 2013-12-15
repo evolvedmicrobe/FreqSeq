@@ -39,7 +39,7 @@ namespace FREQSeq
             XmlNode barcodeXML = baseNode.SelectSingleNode("//" + BARCODES_NODE_NAME);
             BarCodeCollection BCC=CreateBarCodeCollectionFromBarcodeXMLNode(barcodeXML);
             XmlNode variantXML=baseNode.SelectSingleNode("//"+ VARIANTS_NODE_NAME);
-            AlleleCollection AC=CreateAlleleCollectionFromVariantsXMLNode(variantXML);
+            LocusCollection AC=CreateAlleleCollectionFromVariantsXMLNode(variantXML);
             AlleleFinder AF = new AlleleFinder(BCC,AC);
             AF.SetDefaultOptions();
             XmlNode options = baseNode.SelectSingleNode("//" + OPTIONS_NODE_NAME);
@@ -80,9 +80,9 @@ namespace FREQSeq
                 throw new IOException("No Barcodes were created from this XML file.");
             return BCC;
         }
-        private static AlleleCollection CreateAlleleCollectionFromVariantsXMLNode(XmlNode variantsXML)
+        private static LocusCollection CreateAlleleCollectionFromVariantsXMLNode(XmlNode variantsXML)
         {
-            AlleleCollection AC = new AlleleCollection();
+            LocusCollection AC = new LocusCollection();
             foreach (XmlNode childNode in variantsXML.ChildNodes)
             {
                 if (childNode.NodeType == XmlNodeType.Element && childNode.Name == VARIANT_NODE_NAME)
@@ -92,13 +92,16 @@ namespace FREQSeq
                     {
                         throw new IOException("Need more than two types defined in XML for all variants");
                     }
-                    AlleleCollection.Allele curAllele = new AlleleCollection.Allele();
+                    LocusCollection.Locus curAllele = new LocusCollection.Locus();
+                    List<string> alleleSequences = new List<string>();
                     foreach (XmlNode node in types)
                     {
                         string curType = node.InnerText.Trim();
-                        curAllele.AddType(curType);
+                        alleleSequences.Add(curType);
+                        //curAllele.AddType(curType);
                     }
-                    AC.AddAllele(curAllele);                   
+                    curAllele.AddTypes(alleleSequences);
+                    AC.AddLocus(curAllele);                   
                 }
             }
             if (AC.AllSequences.Count == 0)

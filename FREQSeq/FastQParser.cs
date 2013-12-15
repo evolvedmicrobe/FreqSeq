@@ -142,9 +142,11 @@ namespace FREQSeq
 					byte[] arr = ENC.GetBytes(ReadsToReturn);
 					Array.Resize (ref arr, CurrentPos*2);
                     MemoryStream MS = new MemoryStream(arr);
+                    arr = null;
                     StreamReader SR2 = new StreamReader(MS, ENC, false);
                     Array.Clear(ReadsToReturn, 0, ReadsToReturn.Length);
                     yield return SR2;
+
                 }
             }
         }
@@ -170,7 +172,7 @@ namespace FREQSeq
         /// by multiple threads while the main thread reads off the disk and creates the streams.
         /// </summary>
         /// <returns>A collection of FASTQ Reads</returns>
-        public static List<FastQRead> GetFastQReadsFromStream(StreamReader FastQPortionStream)
+        public static IEnumerable<FastQRead> GetFastQReadsFromStream(StreamReader FastQPortionStream)
         {
             List<FastQRead> toReturn = new List<FastQRead>();
             string line;
@@ -185,10 +187,12 @@ namespace FREQSeq
                 line3 = FastQPortionStream.ReadLine();
                 line4 = FastQPortionStream.ReadLine();
                 FastQRead fqr = new FastQRead(line, line2, line3, line4);
-                toReturn.Add(fqr);
+                yield return fqr;
+                //toReturn.Add(fqr);
             }
+            FastQPortionStream.BaseStream.Dispose();
             FastQPortionStream.Close();
-            return toReturn;
+            //return toReturn;
         }
     }
     /// <summary>

@@ -192,8 +192,17 @@ namespace freqout
 				Console.WriteLine ("Finished successfully");
 				Console.WriteLine ("Analysis took: " + totMinutes.ToString ("F") + " minutes");
 			} catch (Exception thrown) {
-				Console.WriteLine ("Error: Could not run analysis");
+				
+                Console.WriteLine ("Error: Could not run analysis");
 				Console.WriteLine ("Exception is: " + thrown.Message);
+                if (thrown is AggregateException)
+                {
+                    var age=thrown as AggregateException;
+                    foreach (var ex in age.InnerExceptions)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
 				System.Environment.Exit (-1);
 			}
 		}

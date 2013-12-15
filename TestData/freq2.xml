@@ -1,9 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <AFSeq>
-<!--AFSeq element contains everything you need to run the analysis-->
-<!--Barcodes contains the barcode elements-->
-<Barcodes>
-<!--Each barcode element contains the 6 basepairs that identify a barcode-->
-	<Barcode>AGCAAT</Barcode>
+  <!--AFSeq element contains everything you need to run the analysis-->
+  <!--Barcodes contains the barcode elements-->
+  <Barcodes>
+    <!--Each barcode element contains the 6 basepairs that identify a barcode-->
+    <Barcode>AGCAAT</Barcode>
     <Barcode>CCTGTT</Barcode>
     <Barcode>GGGTTT</Barcode>
     <Barcode>GAAGGC</Barcode>
@@ -51,48 +52,43 @@
     <Barcode>GGATTA</Barcode>
     <Barcode>TATATA</Barcode>
     <Barcode>GTACAA</Barcode>
-</Barcodes>
-<!--Variants contains all the different sequence variants we are looking for-->
-<Variants>
-<!--Each variant node contains a type node with the sequence for the expected variant, there should be at least two type nodes per variant node -->
-	<Variant>
-		<Type>TGCGGCGTACCGCAACTGCGCGCCGCCTGCCACCGCGCCGAAACCCTGCTCAAGCA</Type>
-		<Type>TGCGGCGTACCGCAACTGCGCGCCGCCTGCCACAGCGCCGAAACCCTGCTCAAGCA</Type>
-	</Variant>
-	<Variant>
-		<Type>GATGGGGCTCCTCTCCCTGATGGTGAGCGAATGACAGCATTTGGTAGCATGCTTAGGTCTACTAGC</Type>
-		<Type>GATGGGGCTCCTCTCCCTGATGGTGAGCGAATGACAGCATTTGATAGCATGCTTAGGTCTACTAGC</Type>
-	</Variant>
-	<Variant>
-		<Type>TCGCCTCGGGCATCAACCGCATGGCCGAGACCCTGCAGAATGCCCAGGAAGA</Type>
-		<Type>TCGCCTCGGGCATCAACCGCATGGCCGAGCCCCTGCAGAATGCCCAGGAAGA</Type>
-	</Variant>
-	<Variant>
-		<Type>ATTATGATTCATCTGAAACTCGGCAGTCCGATATTTTTTACCCAGGTGCGTCCTGGGCTAGGCGGTAAGCCTTTCAAAATGATCAAATTTCGTACAATGAGAGACGCTGTAGAC</Type>
-		<Type>ATTATGATTCATCTGAAACTCGGCAGTCCGATATTTTTTACCCAGGTGCGTCCTGGGCTAGGCGGTAAGCCTTTCAAAATGATCAAATTTCTTACAATGAGAGACGCTGTAGAC</Type>
-	</Variant>
-	
-	<Variant>
-		<Type>GACTATCAGTCTGACTCCACAAGCACCCACACGAATTGCTTGATTCAGTTGTTAAAGAGCGGTTGGTTAAGATCTTTCGTCTCAA</Type>
-		<Type>GACTATCAGTCTGACTCCACAAGCACCCACACGAATTGCTTGATTCAGTTGTTAAAGAGCGGCTGGTTAAGATCTTTCGTCTCAA</Type>
-	</Variant>
-
-	<Variant>
-		<Type>CAACACCCTCGTGGGCGGCGTGAGCGTGTCGCGTCCGTTCGAGGCCAATTCGAACTTCCGCTACGGCGCCAACATCTCGCGGCGCC</Type>
-		<Type>CAACACCCTCGTGGGCGGCGTGAGCGTGTCGCGTCCGTTCGAGGCCAATTCGAACTTCCGCTAAGGCGCCAACATCTCGCGGCGCC</Type>
-	</Variant>
-
-	<Variant>
-		<Type>GCGCCTTGGTTTTTTGCTAAGGTGTTCAGCAACCTATAAGACCATATCGCGAGGTGTCTGCTTGATTAGGGTGCTAGTAGTCGATGACCATGAT</Type>
-		<Type>GCGCCTTGGTTTTTTGCTAAGGTGTTCAGCAACCTATAAGACCATATCGCGAGGTGTCTGCTTGATTAGGGGGCTAGTAGTCGATGACCATGAT</Type>
-	</Variant>
-	
-	<Variant>
-		<Type>GGTCAACGCCCACACCACCAGTTTCAGGCACATGGAGTCGTAGAACGGCGGGATGGTGTAGCCGGTATAGATCGCCGTGTCGGTACG</Type>
-		<Type>GGTCAACGCCCACACCACCAGTTTCAGGCACATGGAGTCGTAGAACGGCGGGATGGTGTAGCCGTTATAGATCGCCGTGTCGGTACG</Type>
-	</Variant>
-	
-</Variants>
+  </Barcodes>
+  <!--Variants contains all the different sequence variants we are looking for-->
+  <Variants>
+    <!--Each variant node contains a type node with the sequence for the expected variant, there should be at least two type nodes per variant node -->
+    <Variant>
+      <Type>TGCGGCGTACCGCAACTGCGCGCCGCCTGCCACCGCGCCGAAACCCTGCTCAAGCA</Type>
+      <Type>TGCGGCGTACCGCAACTGCGCGCCGCCTGCCACAGCGCCGAAACCCTGCTCAAGCA</Type>
+    </Variant>
+    <Variant>
+      <Type>GATGGGGCTCCTCTCCCTGATGGTGAGCGAATGACAGCATTTGGTAGCATGCTTAGGTCTACTAGC</Type>
+      <Type>GATGGGGCTCCTCTCCCTGATGGTGAGCGAATGACAGCATTTGATAGCATGCTTAGGTCTACTAGC</Type>
+    </Variant>
+    <Variant>
+      <Type>TCGCCTCGGGCATCAACCGCATGGCCGAGACCCTGCAGAATGCCCAGGAAGA</Type>
+      <Type>TCGCCTCGGGCATCAACCGCATGGCCGAGCCCCTGCAGAATGCCCAGGAAGA</Type>
+    </Variant>
+    <Variant>
+      <Type>ATTATGATTCATCTGAAACTCGGCAGTCCGATATTTTTTACCCAGGTGCGTCCTGGGCTAGGCGGTAAGCCTTTCAAAATGATCAAATTTCGTACAATGAGAGACGCTGTAGAC</Type>
+      <Type>ATTATGATTCATCTGAAACTCGGCAGTCCGATATTTTTTACCCAGGTGCGTCCTGGGCTAGGCGGTAAGCCTTTCAAAATGATCAAATTTCTTACAATGAGAGACGCTGTAGAC</Type>
+    </Variant>
+    <Variant>
+      <Type>GACTATCAGTCTGACTCCACAAGCACCCACACGAATTGCTTGATTCAGTTGTTAAAGAGCGGTTGGTTAAGATCTTTCGTCTCAA</Type>
+      <Type>GACTATCAGTCTGACTCCACAAGCACCCACACGAATTGCTTGATTCAGTTGTTAAAGAGCGGCTGGTTAAGATCTTTCGTCTCAA</Type>
+    </Variant>
+    <Variant>
+      <Type>CAACACCCTCGTGGGCGGCGTGAGCGTGTCGCGTCCGTTCGAGGCCAATTCGAACTTCCGCTACGGCGCCAACATCTCGCGGCGCC</Type>
+      <Type>CAACACCCTCGTGGGCGGCGTGAGCGTGTCGCGTCCGTTCGAGGCCAATTCGAACTTCCGCTAAGGCGCCAACATCTCGCGGCGCC</Type>
+    </Variant>
+    <Variant>
+      <Type>GCGCCTTGGTTTTTTGCTAAGGTGTTCAGCAACCTATAAGACCATATCGCGAGGTGTCTGCTTGATTAGGGTGCTAGTAGTCGATGACCATGAT</Type>
+      <Type>GCGCCTTGGTTTTTTGCTAAGGTGTTCAGCAACCTATAAGACCATATCGCGAGGTGTCTGCTTGATTAGGGGGCTAGTAGTCGATGACCATGAT</Type>
+    </Variant>
+    <Variant>
+      <Type>GGTCAACGCCCACACCACCAGTTTCAGGCACATGGAGTCGTAGAACGGCGGGATGGTGTAGCCGGTATAGATCGCCGTGTCGGTACG</Type>
+      <Type>GGTCAACGCCCACACCACCAGTTTCAGGCACATGGAGTCGTAGAACGGCGGGATGGTGTAGCCGTTATAGATCGCCGTGTCGGTACG</Type>
+    </Variant>
+  </Variants>
   <Options>
     <!--The prefix name for all results files that are generated.-->
     <OutputFileNamePrefix Type="System.String">AF_Seq_Results</OutputFileNamePrefix>
@@ -105,7 +101,7 @@
     <!--The QC score range cannot be determined from the file, so we will parse the number of reads below first to get statistics on how to filter based on quality-->
     <InitialReadsToParse Type="System.Int32">5000</InitialReadsToParse>
     <!--After parsing through an initial number of reads, any read whose quality is lower than this quantile for those initial reads we will not try to assign by aligning to possible alleles (so for example, a 0.02 value means that if a read has an average QC score less than the lowest 2% of reads we initally parsed, than we will not try to align it.  Essentially a junk data filter.  -->
-    <QuantileOfAvgReadQualityCutoff Type="System.Single">0.02 </QuantileOfAvgReadQualityCutoff>
+    <QuantileOfAvgReadQualityCutoff Type="System.Single">0.1</QuantileOfAvgReadQualityCutoff>
     <!--Any read where the number of 'N' characters (as opposed to 'A','C','G' or 'T') is higher than this percentage is not aligned if not an exact match-->
     <MaxPercentageNForInexactMatches Type="System.Single">0.2 </MaxPercentageNForInexactMatches>
     <!--Alignment options, see BLAST documentation or basic bioinformatics book for explanations (look for Smith-Waterman alignment discussions)-->

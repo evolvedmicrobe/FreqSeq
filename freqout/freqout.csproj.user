@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>-xml=freq2.xml -v Sample_1_run1_R1.fastq.gz</StartArguments>
+    <StartArguments>-xml=freq2.xml -v C:\Users\Nigel\Downloads\ID3247_raw_reads_phiXfiltered.fastq.gz</StartArguments>
+    <StartWorkingDirectory>C:\Users\Nigel\Documents\My Dropbox\Software\FreqSeqCode\TestData\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory>publish\</PublishUrlHistory>
@@ -14,7 +15,7 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <StartArguments>-xml=freq2.xml -v Sample_1_run1_R1.fastq.gz</StartArguments>
+    <StartArguments>-xml=../../../TestData/freq2.xml -v C:\Users\Nigel\Downloads\ID3247_raw_reads_phiXfiltered.fastq.gz</StartArguments>
     <StartWorkingDirectory>
     </StartWorkingDirectory>
   </PropertyGroup>

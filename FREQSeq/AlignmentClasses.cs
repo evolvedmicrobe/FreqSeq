@@ -36,10 +36,14 @@ namespace FREQSeq
 
 		public static float GetSmithWatermanScore (string databaseSequence, string querySequence, SimpleSubstitutionMatrix substitutionMatrix)
 		{
-			int sizeCutoff = databaseSequence.Length + 10;
+			int sizeCutoff = Math.Max(databaseSequence.Length,querySequence.Length) + 10;
 			if (querySequence.Length > sizeCutoff) {
 				querySequence = querySequence.Substring (0, sizeCutoff);
 			}
+            if (databaseSequence.Length > sizeCutoff)
+            {
+                databaseSequence = databaseSequence.Substring(0, sizeCutoff);
+            }
 			//Get relevant variables
 			float penaltyGapExist = -substitutionMatrix.gapExistPenalty;
 			float penaltyGapExtend = -substitutionMatrix.gapExtendPenalty;
