@@ -1,0 +1,16 @@
+* text eol=crlf
+*.key binary
+*.pptx binary
+*.dll binary
+*.exe binary
+*.png binary
+*.jpg binary
+*.so binary
+*.a binary
+*.pdb binary
+*.mdb binary
+*.xml binary
+*.XML binary
+*.dylib binary
+*.pdf binary
+*.ai binary
