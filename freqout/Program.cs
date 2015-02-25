@@ -51,6 +51,7 @@ namespace freqout
 			} catch (Exception thrown) {
 				Console.WriteLine ("Error: Could not verify settings");
 				Console.WriteLine ("Exception is: " + thrown.Message);
+                Console.WriteLine ("Stack Trace is: " + thrown.StackTrace);
 				System.Environment.Exit (-1);
 			}
 		}
@@ -195,6 +196,7 @@ namespace freqout
 				
                 Console.WriteLine ("Error: Could not run analysis");
 				Console.WriteLine ("Exception is: " + thrown.Message);
+                Console.WriteLine ("Stack Trace is: " + thrown.StackTrace);
                 if (thrown is AggregateException)
                 {
                     var age=thrown as AggregateException;
