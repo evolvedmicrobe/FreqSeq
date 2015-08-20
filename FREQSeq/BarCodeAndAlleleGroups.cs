@@ -485,21 +485,18 @@ namespace FREQSeq
 
 			public void AddTypes (List<string> types)
 			{
-                HashSet<string> validSet = new HashSet<string>(types);
-                if(validSet.Count!=types.Count)
-                {
-                    for (int i = 0; i < types.Count; i++) {
-                        for (int j = i; j < types.Count; j++) {
-                            if (types[j].Length != types[i].Length) {
-                                throw new IOException("Two types have different lengths, which can skew assignment results.  Please make all variants at a " +
-                                    "locus have the same input length.  Problems with: \t" + types[j] + "\n" + types[i]);
-                            }
-                            if (types[j].StartsWith(types[i])) {
-                                throw new IOException("Two variants are the same, please fix this:\n " + types[j] +"\n"+ types[i]);
-                            }
+ 				// Verify equal length requirement.
+                for (int i = 0; i < types.Count; i++) {
+                    for (int j = (i + 1); j < types.Count; j++) {
+                        if (types [j].Length != types [i].Length) {
+                            throw new IOException ("Two types have different lengths, which can skew assignment results.  Please make all variants at a " +
+                            "locus have the same input length.  Problems with: \t" + types [j] + "\n" + types [i]);
+                        }
+                        if (types [j] == types [i]) {
+                            throw new IOException("Two variants are the same, please fix this:\n " + types[j] +"\n"+ types[i]);
                         }
                     }
-				}
+                }  
                 this.Alleles.AddRange(types);
                 if (Alleles.Count == 2 && AlleleTypeAssigner.GetHammingDistance(Alleles[0], Alleles[1]) == 1)
                 {
