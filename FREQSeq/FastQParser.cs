@@ -49,6 +49,9 @@ namespace FREQSeq
                     //cheap way to skip lines
                     line3 = SR.ReadLine();
                     line4 = SR.ReadLine();
+                    if (line2 == null || line3 == null || line4 ==null) {
+                        throw new IOException("FASTQ entry did not have all four lines.  Problem Entry starts with: " + line);
+                    }
                     FastQRead fqr = new FastQRead(line, line2, line3, line4);
                     toReturn.Add(fqr);
                     if (toReturn.Count >= SizeToGrab) break;
@@ -70,7 +73,7 @@ namespace FREQSeq
             foreach (string FileName in this.FastQNames)
             {
                 FireLogEvent("Parsing: " + FileName);
-                //This hsould be streamlined so it only happens once, kinda slow now
+                //This should be streamlined so it only happens once, kinda slow now
                 StreamReader SR = GetFileStreamReader(FileName);//
                 LeadLength = SR.ReadLine().Length + 1;
                 ReadLength = SR.ReadLine().Length;
@@ -164,7 +167,7 @@ namespace FREQSeq
             {
                 return new StreamReader(fname);
             }
-		}
+        }
         
         /// <summary>
         /// Takes a StreamReader on a memory stream containing the raw unicode data for a portion of a FASTQ
@@ -186,6 +189,9 @@ namespace FREQSeq
                 //cheap way to skip lines
                 line3 = FastQPortionStream.ReadLine();
                 line4 = FastQPortionStream.ReadLine();
+                if (line2 == null || line3 == null || line4 == null) {
+                    throw new IOException("FASTQ entry did not have all four lines.  Problem Entry starts with: " + line);
+                }
                 FastQRead fqr = new FastQRead(line, line2, line3, line4);
                 yield return fqr;
                 //toReturn.Add(fqr);
