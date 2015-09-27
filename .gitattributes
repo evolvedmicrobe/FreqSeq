@@ -1,4 +1,5 @@
 * text eol=crlf
+*.sh binary
 *.gz binary
 *.key binary
 *.pptx binary
