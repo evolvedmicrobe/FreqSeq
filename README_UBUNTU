@@ -1,0 +1,11 @@
+To run the program, you must unzip the freqseq_ubuntu folder and at it's location to both the PATH and LD_LIBRARY_PATH environmental variables so it can be found.  For example, to move it to your personal bin directory, do the following:
+
+
+mkdir $HOME/bin/
+cp freqseq_ubuntu/* $HOME/bin/
+export PATH=$PATH:$HOME/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/bin
+
+If you get an error regarding "libMonoPosixHelper", it indicates this file is not on the path.
+
+
