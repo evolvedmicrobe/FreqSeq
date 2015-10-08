@@ -11,10 +11,17 @@ The source code is divided in to several folders.
 * FreqSeq- The library file containing the methods used by the GUI and command line programs.
 * freqout - The command line program.
 
-Two solution files are available, one for Xamarin studio, the other for Visual Studio.
+<h2>New Version on 9/27/2015</h2>
 
+Bugs Fixed:
 
-<h2>New Version on 12/4/2013<</h2>
+* Warning message if unequal length alleles are input into the program.
+
+Improvements:
+
+* Compiled binary version released for Ubuntu 14.04
+
+<h2>New Version on 12/4/2013</h2>
 
 Bugs Fixed:
 
