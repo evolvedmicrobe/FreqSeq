@@ -32,5 +32,5 @@ rm -rf freqseq_win; mkdir freqseq_win
 cp build/*.dll freqseq_win/
 cp build/*.exe freqseq_win/
 cp Example.xml freqseq_win/
-cp -r TestData freqseq_ubuntu/TestData
+cp -r TestData freqseq_win/TestData
 zip -r freqseq_win.zip freqseq_win/
