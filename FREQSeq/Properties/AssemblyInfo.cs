@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AFSeq")]
-[assembly: AssemblyDescription("AF Seq Analysis Library")]
+[assembly: AssemblyTitle("FreqSeq")]
+[assembly: AssemblyDescription("Freq Seq Analysis Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nigel Delaney, Harvard University")]
-[assembly: AssemblyProduct("AFSeq")]
+[assembly: AssemblyProduct("FreqSeq")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

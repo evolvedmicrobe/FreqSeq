@@ -10,13 +10,17 @@ using System.Diagnostics;
 
 namespace freqout
 {
-	sealed class Program
+    sealed class Program
 	{
-		private const double KB = 1024;
+        private const double KB = 1024;
 		private const double MB = KB * KB;
 		private const double GB = MB * KB;
 		static List<string> FileNames = new List<string> ();
 		static bool SetVerboseAfterLoad = false;
+        /// <summary>
+        /// Used to manually override the output file name.  If not String.Empty, we change the name.
+        /// </summary>
+        static string OutputNameAfterLoad = String.Empty;
 		static string XMLFilename;
 
 		static void Main (string[] args)
@@ -125,19 +129,16 @@ namespace freqout
 				System.Environment.Exit (-1);
 			}
 		}
-
-		static void SetVerbose ()
-		{
-			Program.SetVerboseAfterLoad = true;
-		}
+            
 
 		static void ParseCommandLine (string[] args)
 		{
 			OptionSet OS = new OptionSet () {
 				{ "h|help","Show Help",v => ShowHelp () },
 				{ "d=","Search Directory For FASTQ Files",v => LoadFastQForDirectory (v) },
-				{ "v","Show verbose output",v => SetVerbose () },
+                { "v","Show verbose output",v => Program.SetVerboseAfterLoad = true },
 				{ "xml=","Set XML File",v => SetXMLFile (v) },
+                { "o=", "Set Output File Prefix", v => OutputNameAfterLoad = v }, 
 				{ "<>","Fastq file to analyze",v => AddFileToList (v) }
 			};
 			OS.Parse (args);
@@ -146,24 +147,25 @@ namespace freqout
 
 		static void ShowHelp ()
 		{
-			List<string> Help = new List<string> () {"", "afseqc - AF Seq Console Application",
+			List<string> Help = new List<string> () {"", "freqout - Freq-Seq Console Application",
 				"Program must specify an XML file and at least one FASTQ file (or directory)",
 				"-xml\tThe XML file with the analysis settings",
 				"",
 				"Additional Options:",
 				"-d\tDirectory to find FASTQ files in (files must have .fastq extension)",
 				"-v\tVerbose (overrides XML)",
+                "-o\tSet Output File Name Prefix (overrides XML)",
 				"-help\tShow Help",
 				"\n",
 				"Example: PC",
-				"afseqc.exe -xml=Simple.xml C:\\SeqData\\MyFile.fastq",
+				"freqout.exe -xml=Simple.xml C:\\SeqData\\MyFile.fastq",
 				"\n",
 				"Example: Apple/Linux",
-				"mono afseqc.exe -xml=Simple.xml C:\\SeqData\\MyFile.fastq",
+				"mono freqout.exe -xml=Simple.xml C:\\SeqData\\MyFile.fastq",
 				"",
 				"Note that Apple/Linux use requires installation of Mono: http://www.mono-project.com/Main_Page",
 				"",
-				"More info: www.evolvedmicrobe.com/AFseq/index.html",
+                "More info: http://www.evolvedmicrobe.com/FreqSeq/index.html",
 				""
 			};
 			foreach (string str in Help) {
@@ -186,6 +188,10 @@ namespace freqout
 				if (AF.Verbose) {
 					AF.LoggerEvent += new LogEventHandler (AF_LoggerEvent);
 				}
+                if (OutputNameAfterLoad != String.Empty) {
+                    AF.OutputFileNamePrefix = OutputNameAfterLoad;
+                    
+                }
 				AF.SetFileNames (FileNames);
 				AF.ParseFiles ();
 				AF.MakeReport ();
